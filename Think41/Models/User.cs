@@ -1,12 +1,12 @@
 ﻿namespace Think41.Models
 {
-    public class Customer
+    public class User
     {
         public int Id { get; set; }
         public string First_Name { get; set; }
         public string Last_Name { get; set; }
         public string Email { get; set; }
-        public int Age { get; set; }
+        public byte Age { get; set; }
         public string Gender { get; set; }
         public string State { get; set; }
         public string Street_Address { get; set; }
@@ -20,5 +20,4 @@
 
         public ICollection<Order> Orders { get; set; }
     }
-
 }

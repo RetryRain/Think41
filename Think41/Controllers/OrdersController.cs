@@ -15,22 +15,22 @@ namespace Think41.Controllers
             _context = context;
         }
 
-        // ✅ 1. Get all orders for a specific customer
-        [HttpGet("customer/{customerId}")]
-        public async Task<IActionResult> GetOrdersForCustomer(int customerId)
+        // ✅ 1. Get all orders for a specific user
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetOrdersForUser(int userId)
         {
-            var customer = await _context.Customers
-                .Include(c => c.Orders)
-                .FirstOrDefaultAsync(c => c.Id == customerId);
+            var user = await _context.Users
+                .Include(u => u.Orders)
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (customer == null)
-                return NotFound(new { message = "Customer not found" });
+            if (user == null)
+                return NotFound(new { message = "User not found" });
 
             return Ok(new
             {
-                customerId = customer.Id,
-                customerName = $"{customer.First_Name} {customer.Last_Name}",
-                orders = customer.Orders
+                userId = user.Id,
+                userName = $"{user.First_Name} {user.Last_Name}",
+                orders = user.Orders
             });
         }
 
@@ -45,5 +45,14 @@ namespace Think41.Controllers
 
             return Ok(order);
         }
+
+        // ✅ 3. Get all orders
+        [HttpGet]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var orders = await _context.Orders.ToListAsync();
+            return Ok(orders);
+        }
+
     }
 }

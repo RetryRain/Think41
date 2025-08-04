@@ -1,8 +1,70 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Customer Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-4">
+    <h2 class="mb-4">Customer List</h2>
+
+    <input id="searchInput" class="form-control mb-3" placeholder="Search by name or email" oninput="filterUsers()" />
+
+    <div id="summary" class="mb-3"></div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Order Count</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody"></tbody>
+    </table>
 </div>
+
+@section Scripts {
+    <script>
+        let users = [];
+
+        async function fetchUsers() {
+            const res = await fetch('/api/users');
+            users = await res.json();
+            renderTable(users);
+            renderSummary(users);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+            data.forEach(user => {
+                const row = `<tr>
+                    <td>${user.fullName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.orderCount}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function renderSummary(data) {
+            const summary = document.getElementById('summary');
+            const totalOrders = data.reduce((sum, u) => sum + (u.orderCount || 0), 0);
+            summary.innerHTML = `
+                <div class="alert alert-info">
+                    Total Users: <strong>${data.length}</strong> | Total Orders: <strong>${totalOrders}</strong>
+                </div>
+            `;
+        }
+
+        function filterUsers() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = users.filter(u =>
+                u.fullName.toLowerCase().includes(q) ||
+                u.email.toLowerCase().includes(q)
+            );
+            renderTable(filtered);
+            renderSummary(filtered);
+        }
+
+        fetchUsers();
+    </script>
+}

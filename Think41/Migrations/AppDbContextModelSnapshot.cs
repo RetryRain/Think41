@@ -22,7 +22,48 @@ namespace Think41.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Think41.Models.Customer", b =>
+            modelBuilder.Entity("Order", b =>
+                {
+                    b.Property<int>("Order_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_Id"));
+
+                    b.Property<DateTime>("Created_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Delivered_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Num_Of_Item")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Returned_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Shipped_At")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Order_Id");
+
+                    b.HasIndex("User_Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Think41.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,8 +71,8 @@ namespace Think41.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
+                    b.Property<byte>("Age")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -84,62 +125,21 @@ namespace Think41.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Think41.Models.Order", b =>
+            modelBuilder.Entity("Order", b =>
                 {
-                    b.Property<int>("Order_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_Id"));
-
-                    b.Property<DateTime>("Created_At")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Delivered_At")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Num_Of_Item")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("Returned_At")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Shipped_At")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("User_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Order_Id");
-
-                    b.HasIndex("User_Id");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("Think41.Models.Order", b =>
-                {
-                    b.HasOne("Think41.Models.Customer", "Customer")
+                    b.HasOne("Think41.Models.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("User_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Think41.Models.Customer", b =>
+            modelBuilder.Entity("Think41.Models.User", b =>
                 {
                     b.Navigation("Orders");
                 });
