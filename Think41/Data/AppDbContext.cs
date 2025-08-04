@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using Think41.Models;
 
 namespace Think41.Data
@@ -14,11 +12,16 @@ namespace Think41.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Set primary keys (if not using [Key] attribute)
+            modelBuilder.Entity<Customer>().HasKey(c => c.Id);
+            modelBuilder.Entity<Order>().HasKey(o => o.Order_Id);
+
+            // Define relationship: Customer has many Orders
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
                 .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.User_Id);
+                .HasForeignKey(o => o.User_Id)
+                .OnDelete(DeleteBehavior.Cascade); // optional
         }
     }
-
 }
