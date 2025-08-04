@@ -1,0 +1,4 @@
+<img width="1910" height="852" alt="image" src="https://github.com/user-attachments/assets/5e4ec2cd-f54d-4c5b-a70d-6189ddf08747" />
+<img width="1919" height="835" alt="image" src="https://github.com/user-attachments/assets/1698129e-c3a3-45df-bad1-0064abd6f8b1" />
+
+I have used ASP.NET - C# to build the app in approximately 2 hours using the given database. However since I used the SSMS to build the database, you might not see the actual values unless you run a migration in you device. Here I have pasted the 2 screenshots of the working application with all the parameters as per instructions. I have used the MVC architecture and will be using the layered architecture if the time permitted to increase the layers and improve code reusability and testability. 
